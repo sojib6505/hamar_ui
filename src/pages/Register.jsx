@@ -12,9 +12,13 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await register(form)
-    showToast?.('Account created — welcome to HAMAR')
-    navigate('/profile')
+    try {
+      await register(form)
+      showToast?.('Account created — welcome to HAMAR')
+      navigate('/profile')
+    } catch (err) {
+      showToast?.(err.message || 'Failed to create account. Please try again.')
+    }
   }
 
   return (

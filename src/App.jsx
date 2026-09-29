@@ -24,10 +24,34 @@ import Warranty from '@/pages/Warranty'
 import Rewards from '@/pages/Rewards'
 import Referrals from '@/pages/Referrals'
 import NotFound from '@/pages/NotFound'
+import AdminProtectedRoute from '@/components/admin/AdminProtectedRoute'
+import AdminLayout from '@/layouts/AdminLayout'
+import AdminLogin from '@/pages/admin/AdminLogin'
+import {
+  AdminDashboardPage,
+  AdminProductsPage,
+  AdminCategoriesPage,
+  AdminBrandsPage,
+  AdminOrdersPage,
+  AdminCustomersPage,
+  AdminSettingsPage,
+} from '@/pages/admin/AdminPages'
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route element={<AdminProtectedRoute />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="products" element={<AdminProductsPage />} />
+          <Route path="categories" element={<AdminCategoriesPage />} />
+          <Route path="brands" element={<AdminBrandsPage />} />
+          <Route path="orders" element={<AdminOrdersPage />} />
+          <Route path="customers" element={<AdminCustomersPage />} />
+          <Route path="settings" element={<AdminSettingsPage />} />
+        </Route>
+      </Route>
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />

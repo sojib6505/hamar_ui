@@ -12,9 +12,13 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    await login(form)
-    showToast?.('Welcome back to HAMAR')
-    navigate('/profile')
+    try {
+      await login(form)
+      showToast?.('Welcome back to HAMAR')
+      navigate('/profile')
+    } catch (err) {
+      showToast?.(err.message || 'Failed to log in. Please check your credentials.')
+    }
   }
 
   return (

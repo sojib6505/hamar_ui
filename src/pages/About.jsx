@@ -1,4 +1,4 @@
-import Breadcrumb from '@/components/ui/Breadcrumb'
+ import Breadcrumb from '@/components/ui/Breadcrumb'
 import { motion } from 'framer-motion'
 
 const SECTIONS = [

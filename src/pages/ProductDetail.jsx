@@ -138,7 +138,7 @@ export default function ProductDetail() {
 
         {tab === 'Specifications' && (
           <div className="max-w-2xl divide-y divide-line border border-line rounded-2xl overflow-hidden">
-            {Object.entries(product.specifications).map(([k, v]) => (
+            {Object.entries(product.specifications || {}).map(([k, v]) => (
               <div key={k} className="flex justify-between px-5 py-3 text-sm odd:bg-surface">
                 <span className="text-muted">{k}</span>
                 <span className="text-ink font-medium font-mono-tech">{v}</span>
