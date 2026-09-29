@@ -5,16 +5,21 @@ import EmptyState from '@/components/ui/EmptyState'
 import ProductCard from '@/components/product/ProductCard'
 import { useCart } from '@/context/CartContext'
 import { formatPrice } from '@/utils/format'
-import { products } from '@/data/products'
+import { fetchProducts } from '@/services/productService'
 import { FiMinus, FiPlus, FiTrash2, FiShoppingBag, FiHeart } from 'react-icons/fi'
 import { useWishlist } from '@/context/WishlistContext'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function Cart() {
   const { items, updateQuantity, removeFromCart, subtotal } = useCart()
   const { toggleWishlist } = useWishlist()
   const [coupon, setCoupon] = useState('')
   const [applied, setApplied] = useState(null)
+  const [recommended, setRecommended] = useState([])
+
+  useEffect(() => {
+    fetchProducts({ sort: 'featured' }).then((products) => setRecommended(products.slice(0, 4)))
+  }, [])
 
   const delivery = subtotal > 3000 || items.length === 0 ? 0 : 80
   const discount = applied ? Math.round(subtotal * 0.1) : 0
@@ -23,8 +28,6 @@ export default function Cart() {
   const handleApplyCoupon = () => {
     if (coupon.trim().toUpperCase() === 'HAMAR10') setApplied('HAMAR10')
   }
-
-  const recommended = products.slice(0, 4)
 
   if (items.length === 0) {
     return (

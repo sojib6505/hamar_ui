@@ -1,12 +1,18 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SectionHeader from '@/components/ui/SectionHeader'
 import ProductCard from '@/components/product/ProductCard'
 import Button from '@/components/ui/Button'
-import { products } from '@/data/products'
+import { fetchProducts } from '@/services/productService'
 import { FiArrowRight } from 'react-icons/fi'
 
 export default function BestSellers() {
-  const bestSellers = [...products].sort((a, b) => b.reviewCount - a.reviewCount).slice(0, 8)
+  const [bestSellers, setBestSellers] = useState([])
+
+  useEffect(() => {
+    fetchProducts({ sort: 'bestselling' }).then((products) => setBestSellers(products.slice(0, 8)))
+  }, [])
+
   return (
     <section className="py-20 md:py-24">
       <div className="container-hamar">
