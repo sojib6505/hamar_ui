@@ -9,7 +9,6 @@ import {
 import { auth, isFirebaseConfigured } from '@/config/firebase'
 
 const API_URL = import.meta.env.VITE_API_URL 
-
 export async function login(credentials) {
   if (isFirebaseConfigured && auth) {
     const cred = await signInWithEmailAndPassword(auth, credentials.email, credentials.password)
