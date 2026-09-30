@@ -11,10 +11,14 @@ const ITEMS = [
 
 export default function TrustIndicators() {
   return (
-    <section className="py-10 border-b border-line">
-      <div className="container-hamar grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+    <section className="py-6 sm:py-10 border-b border-line">
+      <div className="container-hamar grid grid-cols-5 gap-1 sm:gap-3">
         {ITEMS.map((item) => (
-          <TrustBadge key={item.label} icon={item.icon} label={item.label} />
+          <TrustBadge
+            key={item.label}
+            icon={item.icon}
+            label={item.label}
+          />
         ))}
       </div>
     </section>

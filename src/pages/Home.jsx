@@ -16,8 +16,8 @@ export default function Home() {
     <>
       <Hero />
       <TrustIndicators />
-      <BestSellers />
       <FeaturedCategories />
+      <BestSellers />
       <FeaturedBrands />
       <WhyHamar />
       <OriginalVsFake />
