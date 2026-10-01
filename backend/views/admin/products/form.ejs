@@ -1,0 +1,117 @@
+<div class="topbar">
+  <h1 class="page-title"><%= product && product._id ? 'Edit Product' : 'Add Product' %></h1>
+  <a href="/admin/products" class="btn outline">Back to Products</a>
+</div>
+
+<% if (error) { %><div class="flash error"><%= error %></div><% } %>
+
+<form class="card" method="POST" action="<%= product && product._id ? '/admin/products/' + product._id : '/admin/products' %>">
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Product Name</label>
+      <input type="text" name="name" required value="<%= product?.name || '' %>" />
+    </div>
+    <div class="form-group">
+      <label>Slug (leave blank to auto-generate)</label>
+      <input type="text" name="slug" value="<%= product?.slug || '' %>" />
+    </div>
+    <div class="form-group">
+      <label>Price (৳)</label>
+      <input type="number" name="price" required value="<%= product?.price || '' %>" />
+    </div>
+    <div class="form-group">
+      <label>Old Price (optional)</label>
+      <input type="number" name="oldPrice" value="<%= product?.oldPrice || '' %>" />
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select name="category">
+        <option value="">— Select —</option>
+        <% categories.forEach(c => { %>
+          <option value="<%= c._id %>" <%= product?.category == c._id ? 'selected' : '' %>><%= c.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Brand</label>
+      <select name="brand">
+        <option value="">— Select —</option>
+        <% brands.forEach(b => { %>
+          <option value="<%= b._id %>" <%= product?.brand == b._id ? 'selected' : '' %>><%= b.name %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Stock Status</label>
+      <select name="stock">
+        <option value="in-stock" <%= product?.stock === 'in-stock' ? 'selected' : '' %>>In Stock</option>
+        <option value="out-of-stock" <%= product?.stock === 'out-of-stock' ? 'selected' : '' %>>Out of Stock</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Stock Quantity</label>
+      <input type="number" name="stockQuantity" value="<%= product?.stockQuantity || 0 %>" />
+    </div>
+    <div class="form-group">
+      <label>Rating (0–5)</label>
+      <input type="number" step="0.1" name="rating" value="<%= product?.rating || 0 %>" />
+    </div>
+    <div class="form-group">
+      <label>Review Count</label>
+      <input type="number" name="reviewCount" value="<%= product?.reviewCount || 0 %>" />
+    </div>
+    <div class="form-group">
+      <label>SKU</label>
+      <input type="text" name="sku" value="<%= product?.sku || '' %>" />
+    </div>
+    <div class="form-group">
+      <label>Warranty</label>
+      <input type="text" name="warranty" value="<%= product?.warranty || '12 Months Official Warranty' %>" />
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Image URLs (comma-separated)</label>
+    <input type="text" name="images" value="<%= product?.images?.join(', ') || '' %>" placeholder="https://... , https://..." />
+  </div>
+  <div class="form-group">
+    <label>Badges (comma-separated — e.g. Best Seller, New, Original)</label>
+    <input type="text" name="badges" value="<%= product?.badges?.join(', ') || '' %>" />
+  </div>
+  <div class="form-group">
+    <label>Short Description</label>
+    <textarea name="shortDescription" rows="2"><%= product?.shortDescription || '' %></textarea>
+  </div>
+  <div class="form-group">
+    <label>Full Description</label>
+    <textarea name="description" rows="4"><%= product?.description || '' %></textarea>
+  </div>
+  <div class="form-group">
+    <label>Features (one per line)</label>
+    <textarea name="features" rows="4"><%= product?.features?.join('\n') || '' %></textarea>
+  </div>
+  <div class="form-group">
+    <label>What's Included (one per line)</label>
+    <textarea name="whatsIncluded" rows="3"><%= product?.whatsIncluded?.join('\n') || 'Product Unit\nUser Manual\nWarranty Card' %></textarea>
+  </div>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Compatibility (comma-separated)</label>
+      <input type="text" name="compatibility" value="<%= product?.compatibility?.join(', ') || '' %>" placeholder="iPhone 15, Android USB-C phones" />
+    </div>
+    <div class="form-group">
+      <label>USB / Port Type</label>
+      <input type="text" name="usbType" value="<%= product?.usbType || '' %>" placeholder="USB-C" />
+    </div>
+    <div class="form-group">
+      <label>Charging Speed</label>
+      <input type="text" name="chargingSpeed" value="<%= product?.chargingSpeed || '' %>" placeholder="33W Fast Charge" />
+    </div>
+    <div class="form-group">
+      <label>Delivery Info</label>
+      <input type="text" name="deliveryInfo" value="<%= product?.deliveryInfo || '' %>" placeholder="Delivered in 2–4 business days" />
+    </div>
+  </div>
+
+  <button type="submit" class="btn accent"><%= product && product._id ? 'Save Changes' : 'Create Product' %></button>
+</form>

@@ -1,0 +1,29 @@
+<div class="topbar">
+  <h1 class="page-title">Orders</h1>
+</div>
+
+<div style="display:flex;gap:8px;margin-bottom:16px;">
+  <% ['', 'Pending', 'Confirmed', 'Packed', 'Shipped', 'Delivered', 'Cancelled'].forEach(s => { %>
+    <a href="/admin/orders<%= s ? '?status=' + s : '' %>" class="btn sm <%= status === s ? 'accent' : 'outline' %>"><%= s || 'All' %></a>
+  <% }) %>
+</div>
+
+<table>
+  <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr></thead>
+  <tbody>
+    <% orders.forEach(o => { %>
+      <tr>
+        <td><a href="/admin/orders/<%= o._id %>">#<%= o.orderId %></a></td>
+        <td><%= o.customerName %></td>
+        <td><%= o.items.length %></td>
+        <td>৳<%= o.total.toLocaleString('en-BD') %></td>
+        <td><span class="badge <%= o.status === 'Delivered' ? 'success' : o.status === 'Cancelled' ? 'danger' : 'pending' %>"><%= o.status %></span></td>
+        <td><%= new Date(o.createdAt).toLocaleDateString() %></td>
+        <td><a href="/admin/orders/<%= o._id %>" class="btn sm outline">View</a></td>
+      </tr>
+    <% }) %>
+    <% if (orders.length === 0) { %>
+      <tr><td colspan="7" style="text-align:center;color:var(--muted);">No orders found.</td></tr>
+    <% } %>
+  </tbody>
+</table>

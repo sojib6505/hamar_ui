@@ -1,0 +1,36 @@
+<div class="toolbar">
+  <form class="filters" method="GET" action="/admin/orders">
+    <select name="status" onchange="this.form.submit()">
+      <option value="">All Statuses</option>
+      <% ['Pending','Confirmed','Packed','Shipped','Delivered','Cancelled'].forEach(s => { %>
+        <option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+  </form>
+</div>
+
+<div class="panel">
+  <% if (orders.length === 0) { %>
+    <p class="empty">No orders found.</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment</th><th>Status</th><th>Date</th><th></th></tr></thead>
+        <tbody>
+          <% orders.forEach(o => { %>
+            <tr>
+              <td class="mono"><%= o.orderId %></td>
+              <td><%= o.customer?.name || '—' %></td>
+              <td><%= o.items.length %></td>
+              <td class="mono">৳<%= o.total.toLocaleString('en-BD') %></td>
+              <td><%= o.paymentMethod.toUpperCase() %></td>
+              <td><span class="badge <%= o.status === 'Delivered' ? 'badge-success' : o.status === 'Cancelled' ? 'badge-danger' : 'badge-accent' %>"><%= o.status %></span></td>
+              <td><%= new Date(o.createdAt).toLocaleDateString() %></td>
+              <td><a href="/admin/orders/<%= o._id %>" class="btn btn-outline btn-sm">View</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

@@ -1,0 +1,26 @@
+<form method="POST" action="<%= category ? `/admin/categories/${category._id}?_method=PUT` : '/admin/categories' %>">
+  <div class="panel">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Category Name</label>
+        <input type="text" name="name" required value="<%= category?.name || '' %>" />
+      </div>
+      <div class="form-group">
+        <label>Slug — optional</label>
+        <input type="text" name="slug" value="<%= category?.slug || '' %>" placeholder="e.g. chargers" />
+      </div>
+      <div class="form-group full">
+        <label>Image URL</label>
+        <input type="text" name="image" value="<%= category?.image || '' %>" />
+      </div>
+      <div class="form-group full">
+        <label>Description</label>
+        <textarea name="description" rows="3"><%= category?.description || '' %></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <button type="submit" class="btn btn-accent"><%= category ? 'Update Category' : 'Create Category' %></button>
+    <a href="/admin/categories" class="btn btn-outline">Cancel</a>
+  </div>
+</form>

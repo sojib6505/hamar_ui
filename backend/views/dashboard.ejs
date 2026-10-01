@@ -1,0 +1,71 @@
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="label">Products</div>
+    <div class="value"><%= productCount %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Categories</div>
+    <div class="value"><%= categoryCount %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Brands</div>
+    <div class="value"><%= brandCount %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Orders</div>
+    <div class="value"><%= orderCount %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Revenue</div>
+    <div class="value mono">৳<%= revenue.toLocaleString('en-BD') %></div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Recent Orders</h2>
+  <% if (orders.length === 0) { %>
+    <p class="empty">No orders yet.</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% orders.forEach(o => { %>
+            <tr>
+              <td class="mono"><%= o.orderId %></td>
+              <td><%= o.customer?.name || '—' %></td>
+              <td class="mono">৳<%= o.total.toLocaleString('en-BD') %></td>
+              <td>
+                <span class="badge <%= o.status === 'Delivered' ? 'badge-success' : o.status === 'Cancelled' ? 'badge-danger' : 'badge-accent' %>"><%= o.status %></span>
+              </td>
+              <td><%= new Date(o.createdAt).toLocaleDateString() %></td>
+              <td><a href="/admin/orders/<%= o._id %>" class="btn btn-outline btn-sm">View</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>
+
+<% if (lowStock.length > 0) { %>
+<div class="panel">
+  <h2>⚠️ Out of Stock</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Product</th><th>Price</th><th></th></tr></thead>
+      <tbody>
+        <% lowStock.forEach(p => { %>
+          <tr>
+            <td><%= p.name %></td>
+            <td class="mono">৳<%= p.price.toLocaleString('en-BD') %></td>
+            <td><a href="/admin/products/<%= p._id %>/edit" class="btn btn-outline btn-sm">Edit</a></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<% } %>

@@ -1,0 +1,49 @@
+<a href="/admin/orders" class="btn btn-outline btn-sm" style="margin-bottom:16px;">← Back to Orders</a>
+
+<div class="panel">
+  <h2>Order <%= order.orderId %></h2>
+  <div class="form-grid">
+    <div><strong>Customer:</strong> <%= order.customer?.name %></div>
+    <div><strong>Email:</strong> <%= order.customer?.email %></div>
+    <div><strong>Phone:</strong> <%= order.customer?.phone %></div>
+    <div><strong>Address:</strong> <%= order.customer?.address %>, <%= order.customer?.city %></div>
+    <div><strong>Payment:</strong> <%= order.paymentMethod.toUpperCase() %></div>
+    <div><strong>Date:</strong> <%= new Date(order.createdAt).toLocaleString() %></div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Items</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr></thead>
+      <tbody>
+        <% order.items.forEach(i => { %>
+          <tr>
+            <td><%= i.name %></td>
+            <td class="mono">৳<%= i.price.toLocaleString('en-BD') %></td>
+            <td><%= i.quantity %></td>
+            <td class="mono">৳<%= (i.price * i.quantity).toLocaleString('en-BD') %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:16px; text-align:right; font-size:14px;">
+    <div>Subtotal: <span class="mono">৳<%= order.subtotal.toLocaleString('en-BD') %></span></div>
+    <div>Delivery: <span class="mono">৳<%= order.delivery.toLocaleString('en-BD') %></span></div>
+    <div style="font-weight:700; font-size:16px; margin-top:4px;">Total: <span class="mono">৳<%= order.total.toLocaleString('en-BD') %></span></div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Update Status</h2>
+  <form method="POST" action="/admin/orders/<%= order._id %>/status?_method=PUT" style="display:flex; gap:10px; align-items:center;">
+    <select name="status" style="width:auto;">
+      <% ['Pending','Confirmed','Packed','Shipped','Delivered','Cancelled'].forEach(s => { %>
+        <option value="<%= s %>" <%= order.status === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+    <button type="submit" class="btn btn-accent">Update Status</button>
+  </form>
+</div>

@@ -1,0 +1,59 @@
+<div class="topbar">
+  <h1 class="page-title">Dashboard</h1>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="label">Total Products</div>
+    <div class="value"><%= productCount %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Categories</div>
+    <div class="value"><%= categoryCount %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Total Orders</div>
+    <div class="value"><%= orderCount %></div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Revenue</div>
+    <div class="value">৳<%= totalRevenue.toLocaleString('en-BD') %></div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start;">
+  <div class="card">
+    <h3 style="margin-top:0;">Recent Orders</h3>
+    <% if (recentOrders.length === 0) { %>
+      <p style="color:var(--muted);font-size:13px;">No orders yet.</p>
+    <% } else { %>
+      <table>
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
+        <tbody>
+          <% recentOrders.forEach(o => { %>
+            <tr>
+              <td><a href="/admin/orders/<%= o._id %>">#<%= o.orderId %></a></td>
+              <td><%= o.customerName %></td>
+              <td>৳<%= o.total.toLocaleString('en-BD') %></td>
+              <td><span class="badge <%= o.status === 'Delivered' ? 'success' : o.status === 'Cancelled' ? 'danger' : 'pending' %>"><%= o.status %></span></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0;">Out of Stock</h3>
+    <% if (lowStock.length === 0) { %>
+      <p style="color:var(--muted);font-size:13px;">Everything is in stock 🎉</p>
+    <% } else { %>
+      <% lowStock.forEach(p => { %>
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line);font-size:13px;">
+          <span><%= p.name %></span>
+          <a href="/admin/products/<%= p._id %>/edit" class="btn sm outline">Edit</a>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>

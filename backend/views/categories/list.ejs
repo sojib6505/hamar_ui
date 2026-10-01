@@ -1,0 +1,32 @@
+<div class="toolbar">
+  <span></span>
+  <a href="/admin/categories/new" class="btn btn-accent">+ Add Category</a>
+</div>
+
+<div class="panel">
+  <% if (categories.length === 0) { %>
+    <p class="empty">No categories found.</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Name</th><th>Slug</th><th>Products</th><th></th></tr></thead>
+        <tbody>
+          <% categories.forEach(c => { %>
+            <tr>
+              <td><img class="thumb" src="<%= c.image || '' %>" alt="" /></td>
+              <td><%= c.name %></td>
+              <td class="mono"><%= c.slug %></td>
+              <td><%= countMap[c.slug] || 0 %></td>
+              <td class="actions">
+                <a href="/admin/categories/<%= c._id %>/edit" class="btn btn-outline btn-sm">Edit</a>
+                <form method="POST" action="/admin/categories/<%= c._id %>?_method=DELETE" onsubmit="return confirm('Delete this category?')">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

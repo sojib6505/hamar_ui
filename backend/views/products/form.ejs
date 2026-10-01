@@ -1,0 +1,112 @@
+<form
+  method="POST"
+  action="<%= product ? `/admin/products/${product._id}?_method=PUT` : '/admin/products' %>"
+>
+  <div class="panel">
+    <h2>Basic Information</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Product Name</label>
+        <input type="text" name="name" required value="<%= product?.name || '' %>" />
+      </div>
+      <div class="form-group">
+        <label>Slug (URL) — optional, auto-generated from name</label>
+        <input type="text" name="slug" value="<%= product?.slug || '' %>" placeholder="e.g. anker-nano-3-33w-charger" />
+      </div>
+      <div class="form-group">
+        <label>Brand</label>
+        <select name="brand" required>
+          <option value="">Select brand</option>
+          <% brands.forEach(b => { %>
+            <option value="<%= b._id %>" <%= product?.brand?.toString() === b._id.toString() ? 'selected' : '' %>><%= b.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select name="category" required>
+          <option value="">Select category</option>
+          <% categories.forEach(c => { %>
+            <option value="<%= c._id %>" <%= product?.category?.toString() === c._id.toString() ? 'selected' : '' %>><%= c.name %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Image URLs (comma-separated)</label>
+        <input type="text" name="images" value="<%= product?.images?.join(', ') || '' %>" placeholder="https://…, https://…" />
+      </div>
+      <div class="form-group full">
+        <label>Short Description</label>
+        <input type="text" name="shortDescription" value="<%= product?.shortDescription || '' %>" />
+      </div>
+      <div class="form-group full">
+        <label>Full Description</label>
+        <textarea name="description" rows="4"><%= product?.description || '' %></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Pricing & Stock</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Price (৳)</label>
+        <input type="number" name="price" required value="<%= product?.price || '' %>" />
+      </div>
+      <div class="form-group">
+        <label>Old Price (৳) — optional, for discount</label>
+        <input type="number" name="oldPrice" value="<%= product?.oldPrice || '' %>" />
+      </div>
+      <div class="form-group">
+        <label>Stock Status</label>
+        <select name="stock">
+          <option value="in-stock" <%= product?.stock === 'in-stock' ? 'selected' : '' %>>In Stock</option>
+          <option value="out-of-stock" <%= product?.stock === 'out-of-stock' ? 'selected' : '' %>>Out of Stock</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Badges (comma-separated)</label>
+        <input type="text" name="badges" value="<%= product?.badges?.join(', ') || '' %>" placeholder="Best Seller, New, Original" />
+      </div>
+      <div class="form-group">
+        <label>Rating (0–5)</label>
+        <input type="number" step="0.1" min="0" max="5" name="rating" value="<%= product?.rating || 4.5 %>" />
+      </div>
+      <div class="form-group">
+        <label>Review Count</label>
+        <input type="number" name="reviewCount" value="<%= product?.reviewCount || 0 %>" />
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Technical Details</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Charging Speed</label>
+        <input type="text" name="chargingSpeed" value="<%= product?.chargingSpeed || '' %>" placeholder="e.g. 33W Fast Charge" />
+      </div>
+      <div class="form-group">
+        <label>USB / Port Type</label>
+        <input type="text" name="usbType" value="<%= product?.usbType || '' %>" placeholder="e.g. USB-C" />
+      </div>
+      <div class="form-group">
+        <label>Warranty</label>
+        <input type="text" name="warranty" value="<%= product?.warranty || '12 Months Official Warranty' %>" />
+      </div>
+      <div class="form-group">
+        <label>Delivery Info</label>
+        <input type="text" name="deliveryInfo" value="<%= product?.deliveryInfo || 'Delivered in 2–4 business days across Bangladesh.' %>" />
+      </div>
+      <div class="form-group full">
+        <label>Features (one per line)</label>
+        <textarea name="features" rows="4"><%= product?.features?.join('\n') || '' %></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="btn btn-accent"><%= product ? 'Update Product' : 'Create Product' %></button>
+    <a href="/admin/products" class="btn btn-outline">Cancel</a>
+  </div>
+</form>

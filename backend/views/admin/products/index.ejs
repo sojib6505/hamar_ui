@@ -1,0 +1,35 @@
+<div class="topbar">
+  <h1 class="page-title">Products</h1>
+  <a href="/admin/products/new" class="btn accent">+ Add Product</a>
+</div>
+
+<form class="search-bar" method="GET" action="/admin/products">
+  <input type="text" name="q" value="<%= search %>" placeholder="Search products…" />
+  <button type="submit" class="btn outline">Search</button>
+</form>
+
+<table>
+  <thead>
+    <tr><th></th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th></th></tr>
+  </thead>
+  <tbody>
+    <% products.forEach(p => { %>
+      <tr>
+        <td><img class="thumb" src="<%= p.images?.[0] || 'https://via.placeholder.com/40' %>" /></td>
+        <td><%= p.name %></td>
+        <td><%= p.categoryName || '—' %></td>
+        <td>৳<%= p.price.toLocaleString('en-BD') %></td>
+        <td><span class="badge <%= p.stock === 'in-stock' ? 'success' : 'danger' %>"><%= p.stock %></span></td>
+        <td class="actions">
+          <a href="/admin/products/<%= p._id %>/edit" class="btn sm outline">Edit</a>
+          <form method="POST" action="/admin/products/<%= p._id %>/delete" onsubmit="return confirm('Delete this product?')">
+            <button type="submit" class="btn sm danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+    <% if (products.length === 0) { %>
+      <tr><td colspan="6" style="text-align:center;color:var(--muted);">No products found.</td></tr>
+    <% } %>
+  </tbody>
+</table>

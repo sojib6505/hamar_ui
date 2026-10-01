@@ -1,0 +1,52 @@
+<div class="toolbar">
+  <form class="filters" method="GET" action="/admin/products">
+    <input type="text" name="search" placeholder="Search products…" value="<%= filters.search %>" />
+    <select name="category">
+      <option value="">All Categories</option>
+      <% categories.forEach(c => { %>
+        <option value="<%= c.slug %>" <%= filters.category === c.slug ? 'selected' : '' %>><%= c.name %></option>
+      <% }) %>
+    </select>
+    <select name="stock">
+      <option value="">All Stock</option>
+      <option value="in-stock" <%= filters.stock === 'in-stock' ? 'selected' : '' %>>In Stock</option>
+      <option value="out-of-stock" <%= filters.stock === 'out-of-stock' ? 'selected' : '' %>>Out of Stock</option>
+    </select>
+    <button type="submit" class="btn btn-outline btn-sm">Filter</button>
+  </form>
+  <a href="/admin/products/new" class="btn btn-accent">+ Add Product</a>
+</div>
+
+<div class="panel">
+  <% if (products.length === 0) { %>
+    <p class="empty">No products found.</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th></th><th>Name</th><th>Brand</th><th>Price</th><th>Stock</th><th>Rating</th><th></th></tr>
+        </thead>
+        <tbody>
+          <% products.forEach(p => { %>
+            <tr>
+              <td><img class="thumb" src="<%= p.images[0] || '' %>" alt="" /></td>
+              <td><%= p.name %></td>
+              <td><%= p.brandName %></td>
+              <td class="mono">৳<%= p.price.toLocaleString('en-BD') %></td>
+              <td>
+                <span class="badge <%= p.stock === 'in-stock' ? 'badge-success' : 'badge-danger' %>"><%= p.stock %></span>
+              </td>
+              <td class="mono">★ <%= p.rating %></td>
+              <td class="actions">
+                <a href="/admin/products/<%= p._id %>/edit" class="btn btn-outline btn-sm">Edit</a>
+                <form method="POST" action="/admin/products/<%= p._id %>?_method=DELETE" onsubmit="return confirm('Delete this product?')">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</div>

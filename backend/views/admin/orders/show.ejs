@@ -1,0 +1,53 @@
+<div class="topbar">
+  <h1 class="page-title">Order #<%= order.orderId %></h1>
+  <a href="/admin/orders" class="btn outline">Back to Orders</a>
+</div>
+
+<div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start;">
+  <div class="card">
+    <h3 style="margin-top:0;">Items</h3>
+    <table>
+      <thead><tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+      <tbody>
+        <% order.items.forEach(i => { %>
+          <tr>
+            <td><%= i.name %></td>
+            <td><%= i.quantity %></td>
+            <td>৳<%= i.price.toLocaleString('en-BD') %></td>
+            <td>৳<%= (i.price * i.quantity).toLocaleString('en-BD') %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <div style="text-align:right;margin-top:14px;font-size:13px;color:var(--muted);">
+      <p>Subtotal: ৳<%= order.subtotal.toLocaleString('en-BD') %></p>
+      <p>Delivery: ৳<%= order.delivery.toLocaleString('en-BD') %></p>
+      <p style="color:var(--ink);font-weight:700;font-size:16px;">Total: ৳<%= order.total.toLocaleString('en-BD') %></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="margin-top:0;">Customer</h3>
+    <p style="font-size:13px;"><strong><%= order.customerName %></strong></p>
+    <p style="font-size:13px;color:var(--muted);"><%= order.email %></p>
+    <p style="font-size:13px;color:var(--muted);"><%= order.phone %></p>
+    <p style="font-size:13px;color:var(--muted);"><%= order.address %>, <%= order.city %></p>
+    <p style="font-size:13px;color:var(--muted);">Payment: <%= order.paymentMethod?.toUpperCase() %></p>
+
+    <h3>Update Status</h3>
+    <form method="POST" action="/admin/orders/<%= order._id %>/status">
+      <div class="form-group">
+        <select name="status">
+          <% ['Pending', 'Confirmed', 'Packed', 'Shipped', 'Delivered', 'Cancelled'].forEach(s => { %>
+            <option value="<%= s %>" <%= order.status === s ? 'selected' : '' %>><%= s %></option>
+          <% }) %>
+        </select>
+      </div>
+      <button type="submit" class="btn accent" style="width:100%;justify-content:center;">Update Status</button>
+    </form>
+
+    <form method="POST" action="/admin/orders/<%= order._id %>/delete" style="margin-top:10px;" onsubmit="return confirm('Delete this order?')">
+      <button type="submit" class="btn danger" style="width:100%;justify-content:center;">Delete Order</button>
+    </form>
+  </div>
+</div>
