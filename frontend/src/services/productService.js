@@ -3,7 +3,7 @@
 
 import { products as localProducts, getProductBySlug as getLocalProductBySlug } from '@/data/products'
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
 
 // GET /api/products
 export async function fetchProducts(filters = {}) {

@@ -1,12 +1,15 @@
-import 'dotenv/config'
-import express from 'express'
+import dotenv from 'dotenv'
 import path from 'path'
+import express from 'express'
 import morgan from 'morgan'
 import cors from 'cors'
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import methodOverride from 'method-override'
 import expressLayouts from 'express-ejs-layouts'
+
+const __dirname = import.meta.dirname
+dotenv.config({ path: path.join(__dirname, '.env') })
 
 import connectDB from './config/db.js'
 import { notFound, errorHandler } from './middleware/errorHandler.js'
@@ -20,7 +23,6 @@ import adminApiRoutes from './routes/api/admin.js'
 import adminRoutes from './routes/admin/index.js'
 
 const app = express()
-const __dirname = import.meta.dirname
 
 connectDB()
 
@@ -104,5 +106,5 @@ app.use('/admin', adminRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5001
 app.listen(PORT, () => console.log(`🚀 HAMAR backend running on http://localhost:${PORT}  (admin: /admin)`))
