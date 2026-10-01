@@ -101,36 +101,65 @@ export function AuthProvider({ children }) {
   }
 
   const adminLogin = async (email, password) => {
-    if (!isFirebaseConfigured || !auth) {
-      if (email.toLowerCase() === 'admin@hamar.com' || email.toLowerCase().includes('admin')) {
-        const demoAdmin = { name: 'HAMAR Admin', email, role: 'admin' }
-        setCurrentUser(demoAdmin)
-        setUserProfile(demoAdmin)
-        setToken('dev-admin-token')
-        setLoading(false)
-        return { user: demoAdmin }
-      }
-      throw new Error('Admin sign-in requires configured Firebase Authentication.')
-    }
-    const credential = await signInWithEmailAndPassword(auth, email, password)
+    // 1. First attempt login against Backend Admin API (MongoDB Admin credentials)
     try {
-      const { idToken, profile } = await fetchBackendProfile(credential.user)
-      if (profile.role !== 'admin') {
-        throw new Error('This Firebase account is not authorized as a HAMAR administrator.')
+      const res = await fetch(`${API_URL}/auth/admin-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      })
+      const json = await res.json().catch(() => ({}))
+      if (res.ok && json.success && json.data) {
+        const adminProfile = json.data
+        const adminUser = {
+          email: adminProfile.email,
+          displayName: adminProfile.name,
+          getIdToken: async () => json.token,
+        }
+        setCurrentUser(adminUser)
+        setToken(json.token)
+        setUserProfile(adminProfile)
+        setLoading(false)
+        return { user: adminUser }
       }
-      setCurrentUser(credential.user)
-      setToken(idToken)
-      setUserProfile(profile)
-      setLoading(false)
-      return credential
-    } catch (error) {
-      await signOut(auth)
-      setCurrentUser(null)
-      setUserProfile(null)
-      setToken(null)
-      setLoading(false)
-      throw error
+    } catch (backendErr) {
+      console.warn('Backend admin login failed, checking Firebase fallback:', backendErr.message)
     }
+
+    // 2. Fallback to Firebase Authentication if configured
+    if (isFirebaseConfigured && auth) {
+      const credential = await signInWithEmailAndPassword(auth, email, password)
+      try {
+        const { idToken, profile } = await fetchBackendProfile(credential.user)
+        if (profile.role !== 'admin') {
+          throw new Error('This account is not authorized as a HAMAR administrator.')
+        }
+        setCurrentUser(credential.user)
+        setToken(idToken)
+        setUserProfile(profile)
+        setLoading(false)
+        return credential
+      } catch (error) {
+        await signOut(auth)
+        setCurrentUser(null)
+        setUserProfile(null)
+        setToken(null)
+        setLoading(false)
+        throw error
+      }
+    }
+
+    // 3. Fallback dev allowance for admin@hamar.com
+    if (email.toLowerCase() === 'admin@hamar.com' && password === 'hamar123') {
+      const demoAdmin = { name: 'HAMAR Admin', email, role: 'admin' }
+      setCurrentUser(demoAdmin)
+      setUserProfile(demoAdmin)
+      setToken('dev-admin-token')
+      setLoading(false)
+      return { user: demoAdmin }
+    }
+
+    throw new Error('Invalid administrator email or password.')
   }
 
   // Register new account with Firebase and sync with backend
