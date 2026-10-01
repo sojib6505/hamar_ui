@@ -1,32 +1,56 @@
-import { NavLink, Link } from 'react-router-dom'
-import Drawer from '@/components/ui/Drawer'
-import { FiUser, FiHeart, FiBarChart2, FiPhoneCall } from 'react-icons/fi'
+import { NavLink, Link } from "react-router-dom";
+import Drawer from "@/components/ui/Drawer";
+import { FiUser, FiHeart, FiBarChart2, FiPhoneCall } from "react-icons/fi";
+import { useAuth } from "@/context/AuthContext";
 
 export default function MobileNav({ open, onClose, links }) {
+  const { currentUser } = useAuth();
+
   return (
-    <Drawer open={open} onClose={onClose} title="HAMAR" side="left" width="max-w-xs">
+    <Drawer
+      open={open}
+      onClose={onClose}
+      title="HAMAR"
+      side="left"
+      width="max-w-xs"
+    >
       <div className="flex flex-col p-6 gap-1">
         {links.map((link) => (
           <NavLink
             key={link.to}
             to={link.to}
-            end={link.to === '/'}
+            end={link.to === "/"}
             onClick={onClose}
             className={({ isActive }) =>
-              `py-3 border-b border-line text-[15px] font-medium ${isActive ? 'text-ink' : 'text-muted'}`
+              `py-3 border-b border-line text-[15px] font-medium ${isActive ? "text-ink" : "text-muted"}`
             }
           >
             {link.label}
           </NavLink>
         ))}
         <div className="grid grid-cols-3 gap-2 mt-6">
-          <Link to="/login" onClick={onClose} className="flex flex-col items-center gap-1.5 py-4 rounded-xl border border-line text-xs">
+          {/* <Link to="/login" onClick={onClose} className="flex flex-col items-center gap-1.5 py-4 rounded-xl border border-line text-xs">
+            <FiUser size={18} /> Account
+          </Link> */}
+          <Link
+            to={currentUser ? "/profile" : "/login"}
+            onClick={onClose}
+            className="flex flex-col items-center gap-1.5 py-4 rounded-xl border border-line text-xs"
+          >
             <FiUser size={18} /> Account
           </Link>
-          <Link to="/wishlist" onClick={onClose} className="flex flex-col items-center gap-1.5 py-4 rounded-xl border border-line text-xs">
+          <Link
+            to="/wishlist"
+            onClick={onClose}
+            className="flex flex-col items-center gap-1.5 py-4 rounded-xl border border-line text-xs"
+          >
             <FiHeart size={18} /> Wishlist
           </Link>
-          <Link to="/compare" onClick={onClose} className="flex flex-col items-center gap-1.5 py-4 rounded-xl border border-line text-xs">
+          <Link
+            to="/compare"
+            onClick={onClose}
+            className="flex flex-col items-center gap-1.5 py-4 rounded-xl border border-line text-xs"
+          >
             <FiBarChart2 size={18} /> Compare
           </Link>
         </div>
@@ -40,5 +64,5 @@ export default function MobileNav({ open, onClose, links }) {
         </a>
       </div>
     </Drawer>
-  )
+  );
 }
