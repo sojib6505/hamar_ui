@@ -1,11 +1,30 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { useToast } from './ToastContext'
 
 const WishlistContext = createContext(null)
+const WISHLIST_STORAGE_KEY = 'hamar_wishlist'
+
+function readWishlist() {
+  try {
+    const stored = window.localStorage.getItem(WISHLIST_STORAGE_KEY)
+    const items = stored ? JSON.parse(stored) : []
+    return Array.isArray(items) ? items : []
+  } catch {
+    return []
+  }
+}
 
 export function WishlistProvider({ children }) {
-  const [items, setItems] = useState([])
+  const [items, setItems] = useState(readWishlist)
   const { showToast } = useToast()
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(items))
+    } catch {
+      // Keep the wishlist usable when browser storage is unavailable.
+    }
+  }, [items])
 
   const isWishlisted = (productId) => items.some((p) => p.id === productId)
 

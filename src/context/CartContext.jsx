@@ -1,11 +1,30 @@
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useToast } from './ToastContext'
 
 const CartContext = createContext(null)
+const CART_STORAGE_KEY = 'hamar_cart'
+
+function readCart() {
+  try {
+    const stored = window.localStorage.getItem(CART_STORAGE_KEY)
+    const items = stored ? JSON.parse(stored) : []
+    return Array.isArray(items) ? items : []
+  } catch {
+    return []
+  }
+}
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState([]) // { product, quantity }
+  const [items, setItems] = useState(readCart) // { product, quantity }
   const { showToast } = useToast()
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
+    } catch {
+      // Keep the cart usable when browser storage is unavailable.
+    }
+  }, [items])
 
   const addToCart = (product, quantity = 1) => {
     setItems((prev) => {
