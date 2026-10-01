@@ -4,7 +4,7 @@ export default function TrustBadge({ icon: Icon, label }) {
       <div className="w-11 h-11 rounded-full bg-ink text-accent grid place-items-center group-hover:bg-accent group-hover:text-ink transition-colors duration-200">
         <Icon size={18} />
       </div>
-      <span className="text-sm font-medium text-ink">{label}</span>
+      <span className="text-[10px] md:text-sm font-medium text-ink">{label}</span>
     </div>
   )
 }

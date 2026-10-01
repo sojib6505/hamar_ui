@@ -47,14 +47,10 @@ export default function Shop() {
   const paginated = useMemo(() => allProducts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), [allProducts, page])
 
   return (
-    <div className="container-hamar py-8">
-      <Breadcrumb items={[{ label: 'Shop' }]} />
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="font-display text-2xl md:text-3xl font-semibold text-ink">Shop All Products</h1>
-          <p className="text-muted text-sm mt-1">{allProducts.length} products found</p>
-        </div>
-        <div className="flex items-center gap-3">
+    <div className="container-hamar py-5 md:py-8">
+      <div className="flex items-center md:justify-between gap-2">
+          <Breadcrumb items={[{ label: 'Shop' }]} />
+           <div className="flex items-center gap-0">
           <button onClick={() => setMobileFilterOpen(true)} className="lg:hidden flex items-center gap-1.5 text-sm border border-line rounded-full px-4 py-2">
             <FiFilter size={14} /> Filters
           </button>
@@ -69,6 +65,13 @@ export default function Shop() {
           </select>
         </div>
       </div>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="font-display text-2xl md:text-3xl font-semibold text-ink">Shop All Products</h1>
+          <p className="text-muted text-sm mt-1">{allProducts.length} products found</p>
+        </div>
+       
+      </div>
 
       <div className="grid lg:grid-cols-[240px_1fr] gap-8">
         <div className="hidden lg:block">
@@ -76,7 +79,7 @@ export default function Shop() {
         </div>
 
         {mobileFilterOpen && (
-          <div className="fixed inset-0 z-[90] lg:hidden">
+          <div className="fixed inset-0 z-90 lg:hidden">
             <div className="absolute inset-0 bg-ink/50" onClick={() => setMobileFilterOpen(false)} />
             <div className="absolute left-0 top-0 bottom-0 w-full max-w-xs bg-white overflow-y-auto p-5">
               <div className="flex items-center justify-between mb-4">
