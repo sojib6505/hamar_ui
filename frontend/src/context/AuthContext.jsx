@@ -16,9 +16,9 @@ import {
   updateProfile as updateFirebaseProfile,
 } from 'firebase/auth'
 import { auth, isFirebaseConfigured } from '@/config/firebase'
+import { API_BASE_URL as API_URL } from '@/config/api'
 
 const AuthContext = createContext(null)
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
 
 async function fetchBackendProfile(firebaseUser) {
   const idToken = await firebaseUser.getIdToken()

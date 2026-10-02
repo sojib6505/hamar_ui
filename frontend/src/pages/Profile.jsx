@@ -3,8 +3,7 @@ import AccountLayout from '@/components/account/AccountLayout'
 import Button from '@/components/ui/Button'
 import { useToast } from '@/context/ToastContext'
 import { useAuth } from '@/context/AuthContext'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+import { API_BASE_URL as API_URL } from '@/config/api'
 
 export default function Profile() {
   const { userProfile, currentUser, token } = useAuth()

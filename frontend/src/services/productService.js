@@ -2,8 +2,7 @@
 // Connects to the HAMAR backend REST API endpoints with fallback to local mock data
 
 import { products as localProducts, getProductBySlug as getLocalProductBySlug } from '@/data/products'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
+import { API_BASE_URL as API_URL } from '@/config/api'
 
 // GET /api/products
 export async function fetchProducts(filters = {}) {

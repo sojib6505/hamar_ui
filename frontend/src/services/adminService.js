@@ -5,8 +5,7 @@
  * Handles authenticated requests to admin endpoints with token headers
  * and reports API failures instead of substituting fabricated admin data.
  */
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
+import { API_BASE_URL as API_URL } from '@/config/api'
 
 /**
  * Helper to build auth headers

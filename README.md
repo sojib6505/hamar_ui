@@ -105,3 +105,34 @@ Run frontend and backend simultaneously:
 | `GET` | `/api/admin/orders` | Admin orders with search/filter |
 | `PUT` | `/api/admin/orders/:id/status` | Update order status |
 | `GET` | `/api/admin/customers` | Admin customer list |
+
+---
+
+## 🌐 Deploying to Vercel
+
+The repository is pre-configured for seamless deployment to [Vercel](https://vercel.com):
+
+### Option A: Deploy from Monorepo Root (Default)
+1. Import your Git repository into Vercel.
+2. Leave **Root Directory** as `./` (or leave default).
+3. The root [`vercel.json`](file:///Users/tawhid/Desktop/Masrafee/hamar_ui/vercel.json) will automatically run `npm --prefix frontend run build`, output to `frontend/dist`, and configure client-side SPA routing (`/index.html`).
+
+### Option B: Deploy `frontend` Subdirectory
+1. Import repository into Vercel.
+2. In Project Settings, set **Root Directory** to `frontend`.
+3. Vercel will detect Vite, run `npm run build`, and use [`frontend/vercel.json`](file:///Users/tawhid/Desktop/Masrafee/hamar_ui/frontend/vercel.json) for SPA routing.
+
+### Environment Variables on Vercel
+Add the following in your **Vercel Project Settings → Environment Variables**:
+
+| Variable | Description | Example |
+|---|---|---|
+| `VITE_API_URL` | Backend REST API endpoint | `https://your-backend.onrender.com/api` |
+| `VITE_FIREBASE_API_KEY` | Firebase API Key | `AIzaSy...` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase Auth Domain | `hamar-xxx.firebaseapp.com` |
+| `VITE_FIREBASE_PROJECT_ID` | Firebase Project ID | `hamar-xxx` |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase Storage Bucket | `hamar-xxx.firebasestorage.app` |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase Messaging Sender ID | `817736891295` |
+| `VITE_FIREBASE_APP_ID` | Firebase App ID | `1:817736891295:web:...` |
+
+> **Note**: The backend automatically allows all `*.vercel.app` origins for CORS, ensuring both production domains and preview branch deployments can communicate with the backend.

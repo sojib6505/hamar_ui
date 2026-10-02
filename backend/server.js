@@ -47,8 +47,22 @@ const allowedOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173,http
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or same origin) or in allowed list
-      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes('*') || process.env.NODE_ENV !== 'production') {
+      let isVercelDomain = false
+      if (origin) {
+        try {
+          const url = new URL(origin)
+          isVercelDomain = url.hostname.endsWith('.vercel.app')
+        } catch (_) {}
+      }
+
+      // Allow requests with no origin (like mobile apps, curl, or same origin), allowed list, or vercel previews
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        allowedOrigins.includes('*') ||
+        process.env.NODE_ENV !== 'production' ||
+        isVercelDomain
+      ) {
         callback(null, true)
       } else {
         callback(new Error('Blocked by CORS policy'))
@@ -57,6 +71,7 @@ app.use(
     credentials: true,
   })
 )
+
 
 // Sessions (used only by the EJS /admin dashboard, not the public REST API)
 let sessionStore
@@ -106,5 +121,9 @@ app.use('/admin', adminRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
+export default app
+
 const PORT = process.env.PORT || 5001
-app.listen(PORT, () => console.log(`🚀 HAMAR backend running on http://localhost:${PORT}  (admin: /admin)`))
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`🚀 HAMAR backend running on http://localhost:${PORT}  (admin: /admin)`))
+}

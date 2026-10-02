@@ -2,8 +2,7 @@
 // Connects to GET /api/categories and GET /api/categories/:slug with fallback to local data
 
 import { categories, getCategoryBySlug } from '@/data/categories'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
+import { API_BASE_URL as API_URL } from '@/config/api'
 
 export async function fetchCategories() {
   try {

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FiInstagram, FiFacebook, FiYoutube, FiSend } from 'react-icons/fi'
+import { FiInstagram, FiFacebook, FiYoutube } from 'react-icons/fi'
 
 const COLUMNS = [
   {

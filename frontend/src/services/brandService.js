@@ -2,8 +2,7 @@
 // Connects to GET /api/brands and GET /api/brands/:slug with fallback to local data
 
 import { brands, getBrandBySlug } from '@/data/brands'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
+import { API_BASE_URL as API_URL } from '@/config/api'
 
 export async function fetchBrands() {
   try {

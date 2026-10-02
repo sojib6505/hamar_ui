@@ -2,8 +2,7 @@
 // Connects to POST /api/orders (Guest and Authenticated) and GET /api/orders/my-orders
 
 import { auth } from '@/config/firebase'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api'
+import { API_BASE_URL as API_URL } from '@/config/api'
 
 const demoOrders = [
   { id: 'ORD-10234', date: '2026-07-28', status: 'Delivered', total: 3690, items: 2 },

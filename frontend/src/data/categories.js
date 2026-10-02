@@ -6,7 +6,7 @@ export const categories = [
     name: 'Chargers',
     description: 'GaN and standard wall chargers built for fast, safe charging.',
     image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=800&q=80',
-    productCount: 30 * 0 + 5,
+    productCount: 5,
   },
   {
     id: 'c2',

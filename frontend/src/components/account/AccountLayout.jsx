@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import Breadcrumb from '@/components/ui/Breadcrumb'
-import { FiUser, FiPackage, FiShield, FiLifeBuoy, FiGift, FiUsers, FiHeart } from 'react-icons/fi'
+import { FiUser, FiPackage, FiShield, FiGift, FiUsers, FiHeart } from 'react-icons/fi'
 
 const LINKS = [
   { to: '/profile', label: 'Profile', icon: FiUser },

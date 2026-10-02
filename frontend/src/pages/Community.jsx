@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Breadcrumb from '@/components/ui/Breadcrumb'
 import CommunityCard from '@/components/community/CommunityCard'
 import Button from '@/components/ui/Button'

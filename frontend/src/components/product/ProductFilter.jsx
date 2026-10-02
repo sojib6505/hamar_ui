@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { FiChevronDown } from 'react-icons/fi'
 import { categories } from '@/data/categories'
 import { brands } from '@/data/brands'
-import { formatPrice } from '@/utils/format'
 
 function FilterSection({ title, children, defaultOpen = true }) {
   const [open, setOpen] = useState(defaultOpen)

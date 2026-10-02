@@ -4,6 +4,7 @@
   "private": true,
   "description": "HAMAR E-commerce Monorepo containing React/Vite Frontend and Express/MongoDB Backend",
   "scripts": {
+    "build": "npm --prefix frontend run build",
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",
     "build:frontend": "npm --prefix frontend run build",
